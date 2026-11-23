@@ -1,0 +1,19 @@
+[Unit]
+Description=R1 camera scene director (simulation output only)
+Requires=r1-director-vlm.service
+After=r1-director-vlm.service
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Service]
+Type=simple
+EnvironmentFile=%h/.config/r1-director.env
+WorkingDirectory=%h/r1-roadshow
+ExecStart=/bin/bash %h/r1-roadshow/director/run.sh
+Restart=on-failure
+RestartSec=5
+KillMode=mixed
+TimeoutStopSec=12
+
+[Install]
+WantedBy=default.target

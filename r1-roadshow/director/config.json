@@ -1,0 +1,25 @@
+{
+  "mode": "dry-run",
+  "endpoint": "",
+  "model": "minicpm-v4.6-lq50",
+  "request_timeout_s": 7,
+  "sample_interval_s": 0.5,
+  "decision_interval_s": 2,
+  "confirmations": 2,
+  "cooldown_s": 12,
+  "max_observation_age_s": 8,
+  "camera_width": 1920,
+  "camera_height": 1080,
+  "camera_fps": 15,
+  "yolo_dir": "~/yolo_test/p1-yolo-test",
+  "yolo_confidence": 0.4,
+  "plans_dir": "plans",
+  "motion": {
+    "profile": "../example.json",
+    "travel_scale": 2.2,
+    "joint_span_deg": [50, 30, 30, 45, 30, 20, 40],
+    "limit_rad_s": [0.06, 0.05, 0.06, 0.05, 0.06, 0.05, 0.06],
+    "limit_rad_s2": [0.12, 0.10, 0.12, 0.10, 0.12, 0.10, 0.12],
+    "hold_s": 2
+  }
+}

@@ -1,0 +1,22 @@
+cmake_minimum_required(VERSION 3.16)
+project(r1_roadshow LANGUAGES CXX)
+
+find_package(Threads REQUIRED)
+find_package(OpenSSL REQUIRED COMPONENTS Crypto)
+set(R1_SDK "" CACHE PATH "Root of the Unitree r1-7a_sdk checkout")
+set(MOTOR_SDK "${R1_SDK}/thirdparty/motor_controller")
+set(MOTOR_ARCH "${CMAKE_SYSTEM_PROCESSOR}")
+if(MOTOR_ARCH STREQUAL "x86_64")
+    set(MOTOR_ARCH x86)
+endif()
+find_library(MOTOR_CONTROLLER_LIBRARY NAMES motor_controller
+             PATHS "${MOTOR_SDK}/lib/${MOTOR_ARCH}" "${MOTOR_SDK}/lib" NO_DEFAULT_PATH)
+if(NOT MOTOR_CONTROLLER_LIBRARY)
+    message(FATAL_ERROR "Set R1_SDK to the Unitree SDK with a matching motor_controller library")
+endif()
+
+add_executable(r1_play play.cpp)
+target_compile_features(r1_play PRIVATE cxx_std_17)
+target_compile_options(r1_play PRIVATE -Wall -Wextra -Wpedantic)
+target_include_directories(r1_play PRIVATE "${R1_SDK}/include" "${MOTOR_SDK}/include")
+target_link_libraries(r1_play PRIVATE "${MOTOR_CONTROLLER_LIBRARY}" Threads::Threads OpenSSL::Crypto)

@@ -1,0 +1,23 @@
+ProductDistancePreset 12.45 3.38 direct 1584 0.00087916 mm, 0.00011946 deg
+ProductTriViewPreset 13.91 3.56 direct 1748 0.0010314 mm, 7.9291e-05 deg
+ProductDetailPreset 14.35 6.46 direct 2082 0.00087868 mm, 0.00011939 deg
+ProductShowcasePreset 40.63 1.61 direct 4225 0.0014171 mm, 0.00037514 deg
+ProductAngleContrastPreset 17.01 3.56 direct 2058 0.0010314 mm, 7.9291e-05 deg
+ProductTopFeaturePreset 11.07 4.81 direct 1589 0.00096859 mm, 0.00028786 deg
+ProductFocusRevealPreset 21.39 3.8 direct 2520 0.0013355 mm, 0.00017714 deg
+ProductBalancedShowcasePreset 23.45 4.05 direct 2751 0.0010113 mm, 0.00012346 deg
+PortraitDistanceFollowPreset 9.87 3.43 direct 1331 0.00088815 mm, 9.2273e-05 deg
+PortraitBiasSwitchPreset 9.21 2.43 direct 1165 0.00029653 mm, 1.4081e-05 deg
+PortraitCloseFocusPreset 11.06 1.5 direct 1257 0.00088573 mm, 9.2126e-05 deg
+PortraitShowcasePreset 21.37 1.63 direct 2301 0.0013527 mm, 0.00015086 deg
+PortraitStandingPreset 17.39 2.41 direct 1981 0.00058613 mm, 6.1435e-05 deg
+PortraitBiasPulsePreset 13.03 1.5 direct 1454 0.0001321 mm, 6.738e-06 deg
+PortraitExtendedShowcasePreset 23.42 2.7 direct 2613 0.0013844 mm, 0.00014699 deg
+PortraitNarrativeShowcasePreset 25.57 1.63 direct 2721 0.0013527 mm, 0.00015086 deg
+PortraitSearch 36.68 17.37 direct 5406 0.0059103 mm, 0.00069801 deg
+VenueTour 26.92 1.5 direct 2843 0 mm, 0 deg
+RoadshowIdleScan 27.86 1.56 direct 2943 0.0004776 mm, 5.628e-05 deg
+RoadshowCaptureSweep 9.84 4.0 direct 1385 0.0007323 mm, 0.00010117 deg
+RoadshowCapturePush 7.94 2.22 direct 1017 0.0011767 mm, 0.00014341 deg
+VenueTour coverage as expected {'舞台左侧': ['stage_left'], '舞台中央': ['stage_left', 'stage_center', 'stage_right', 'stage_center'], '舞台右侧': ['stage_right']}
+Refused model collision, simulation-to-hardware, and corrupted trajectory.

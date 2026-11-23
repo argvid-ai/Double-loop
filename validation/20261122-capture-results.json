@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-22",
+  "evidence_level": "historical capture receipts; original video and images excluded from Git",
+  "source_session_sha256": "2826fed69f8ab607e63919458facfa3dd3a36aa3b17ff1ac52ca624c67968d3c",
+  "source_manifest_sha256": "a6c0ea61e4a51c5421849f47eb484a454bd391f94802c238dcde180efee1a267",
+  "video_sha256": "e7b55a7d97c1d8175e68ce1be799b95f6ba789b0aba3ce6d2c3cfcf427e8c744",
+  "group_recording": {
+    "resolution": [
+      3840,
+      2160
+    ],
+    "people_max": 2,
+    "reason": "person_left",
+    "duration_s": 23.617,
+    "frames": 163,
+    "average_fps": 6.902
+  },
+  "keyframe_scan": {
+    "duration_s": 23.62,
+    "samples": 79,
+    "candidates": 12,
+    "elapsed_s": 12.53
+  },
+  "kept_candidates": 7,
+  "exported_keyframes": 5
+}

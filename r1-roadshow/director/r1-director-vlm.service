@@ -1,0 +1,15 @@
+[Unit]
+Description=R1 director MiniCPM-V 4.6 on Houmo LQ50
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Service]
+Type=simple
+EnvironmentFile=%h/.config/r1-director.env
+ExecStart=/bin/bash -c 'exec /bin/bash "$$R1_VLM_START_SCRIPT"'
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=15
+
+[Install]
+WantedBy=default.target

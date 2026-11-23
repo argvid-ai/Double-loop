@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+recordings/
+artifacts/
+r1-roadshow/director/runs/
+src_cursor_sample.zip
+demo-showcase/
+r1-director-ui/director_panel.py
+*.pdf
+*.env
+.env*
+!*.env.example

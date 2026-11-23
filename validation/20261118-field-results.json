@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-18",
+  "evidence_level": "historical field receipts; original video and logs excluded from Git",
+  "records": [
+    {
+      "source": "verified-recorded-sweep.json",
+      "source_sha256": "226b2b2ce8c6a421f31158a7af31b577680daa9af9b92850f1728c62dce8d5a0",
+      "scene": "two_conversation",
+      "action": "ConversationSweep",
+      "people": 2,
+      "recording_state": "saved",
+      "frames": 653,
+      "fps": 30.0,
+      "span_deg": 13.2021,
+      "max_home_error_deg": 0.30098045936017337,
+      "first_frame_before_command": true,
+      "route_returned_powered": true
+    },
+    {
+      "source": "verified-recorded-group.json",
+      "source_sha256": "b1efb12ec3209b33bf412d9f97677b9fccc1f9e7629102c7a745f138e4743f29",
+      "scene": "two_independent",
+      "action": "GroupWide",
+      "people": 2,
+      "recording_state": "saved",
+      "frames": 680,
+      "fps": 30.0,
+      "span_deg": 13.2261422,
+      "max_home_error_deg": 0.3018398960528625,
+      "first_frame_before_command": true,
+      "route_returned_powered": true
+    }
+  ]
+}

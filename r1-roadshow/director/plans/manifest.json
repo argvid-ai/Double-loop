@@ -1,0 +1,157 @@
+{
+  "mode": "simulation",
+  "config_sha256": "ef9fe42d9f2911ac240deeb5e010a51f8c4c00dbc79bb74bc44189f6f5c8d610",
+  "required_start": {
+    "reference": "field/standby-reference.txt",
+    "reference_sha256": "2a6a74902397c8d2d299039c3556866555f1ff694e209ed8179c4993140e6ddf",
+    "captured_at_utc": "2026-11-17T13:06:42.952354+00:00",
+    "calibration_sha256": "1d6912f98ce67aa95035da16e0de3fe762575ea040b9a0e06ba4b1aa9ee25394",
+    "q_sdk_rad": [
+      -7.5582228,
+      1.2490121,
+      3.6340065,
+      -3.5212803,
+      -5.000752,
+      4.0269442,
+      -4.0629869
+    ],
+    "q_motor_rad": [
+      4.8372228,
+      1.2990121,
+      3.9841165,
+      3.4962803,
+      2.726242,
+      4.7507142,
+      2.4866069
+    ],
+    "open_from_park_joint_order": [
+      "J4",
+      "J2"
+    ],
+    "stable_s": 5
+  },
+  "plans": {
+    "ConversationSweep": {
+      "file": "ConversationSweep.r1traj",
+      "sha256": "572ccd4eaf885b3a2f0378ad199c93477ad284e9b4558b4b9b1cb4e329a9a1ab",
+      "duration_s": 77.42,
+      "joint_span_deg": [
+        50.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "FollowLeft": {
+      "file": "FollowLeft.r1traj",
+      "sha256": "8d7276bd0c14fc3c375df35f20400ff4e6fca44d7df6b120b60c6436056b58bc",
+      "duration_s": 42.96,
+      "joint_span_deg": [
+        25.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "FollowRight": {
+      "file": "FollowRight.r1traj",
+      "sha256": "78fb55c6e55eebb7bc202574d62264de1a3877ebf5322fb0dd2e5df4cef5bcb6",
+      "duration_s": 42.96,
+      "joint_span_deg": [
+        25.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "GroupWide": {
+      "file": "GroupWide.r1traj",
+      "sha256": "34a59fce29c530da61c1e6f78163322dff04f25160b40b913c539222839989d2",
+      "duration_s": 83.42,
+      "joint_span_deg": [
+        50.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "JointAmplitudeCheck": {
+      "file": "JointAmplitudeCheck.r1traj",
+      "sha256": "1c896d52f4b7b2ab75c62122d0e9327fa881df331e71918e54aa82f5c0abc8db",
+      "duration_s": 391.31,
+      "joint_span_deg": [
+        50.0,
+        30.000000000000004,
+        30.000000000000004,
+        45.0,
+        29.999999999999996,
+        20.0,
+        40.0
+      ]
+    },
+    "PortraitStandingPreset": {
+      "file": "PortraitStandingPreset.r1traj",
+      "sha256": "77f40bdbf5e15a0ccde0fd8937c90754d08dd8ef3d32fa227f20551c6fa80606",
+      "duration_s": 74.42999999999999,
+      "joint_span_deg": [
+        13.700918301675559,
+        20.599050143020886,
+        32.48243979136619,
+        28.59591745634441,
+        6.049894217584345,
+        12.817422059050733,
+        14.085599713325145
+      ]
+    },
+    "RiseFollow": {
+      "file": "RiseFollow.r1traj",
+      "sha256": "9d04f0eb1f9f037fb7a9da37e3a37ac0a97b8673c198a4a9c97271fbf31eec3a",
+      "duration_s": 85.96,
+      "joint_span_deg": [
+        9.189855931785624,
+        24.384282126706303,
+        10.044622170092756,
+        49.24972031680919,
+        2.4672796001288577,
+        22.807159253266324,
+        5.4795460189764205
+      ]
+    },
+    "RoadshowIdleScan": {
+      "file": "RoadshowIdleScan.r1traj",
+      "sha256": "82c0bb9062a8444fcc94bb6b6a408d03b820d2f7bf8d12c70ac2b38e60dc122f",
+      "duration_s": 103.12,
+      "joint_span_deg": [
+        31.190964664281942,
+        46.55055731462803,
+        15.255092685513407,
+        18.557183943043746,
+        18.061865930744727,
+        24.98521205082308,
+        23.514562986940582
+      ]
+    }
+  },
+  "simulation_start_rad": [
+    0,
+    0.85,
+    0.4,
+    1.2,
+    0.1,
+    0.03,
+    0.1
+  ],
+  "serial_enabled": false
+}
