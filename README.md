@@ -1,5 +1,16 @@
 # Argvid 双loop主动智能家庭摄影机器人：R1-7A 视觉跟随、自动摄像与机械臂控制
 
+## 快速体验家庭拍摄助理
+
+[Argvid Family Agent](argvid-family-agent/README.md) 提供主对话、异步工作任务、端侧观察和剪辑复看的双服务演示。Linux 或 macOS 需安装 uv 与兼容的 Python 3.11+。从本仓根目录运行离线回归：
+
+```sh
+(cd argvid-family-agent && uv sync --locked && uv run --no-sync pytest -q tests)
+```
+
+首次启动请按[配置说明](argvid-family-agent/README.md)填写自己的模型地址、模型 ID 和密钥。此后在根目录运行 `sh start.sh` 启动，`sh start.sh status` 查看状态，`sh start.sh stop` 停止。默认使用模拟输入。机械臂部分保留原目录和独立设备依赖。
+
+
 本项目使用 **Radxa Orion O6N（此芯平台）+ EMEET C60E 4K Light + 宇树 R1-7A 右臂**，实现人员检测、进出区域触发录像、人体和右手姿态跟随，以及按画面场景选择机械臂运镜。板端还提供独立的末端点动程序 `r1_jog`，可通过键盘或本地 API 调用。
 
 本 README 整理了 2026-11-15 至 2026-11-22 的代码、交接记录及板端调用文档。**GitHub 发布检查日期：2026-11-23，北京时间。** 实测数据对应记录时的安装和标定，设备重新安装后需要重新核对，不能直接当作当前姿态的可用行程。
@@ -89,39 +100,13 @@ C60E USB 相机
 └── .gitignore                      # 排除原始素材、密钥配置和构建产物
 ```
 
-本地根目录为 `/home/tu/文档/ChatGPT/此芯2.0`。**本地不是 O6N 的完整镜像**：新 `arm-control/`、完整 `r1-followcam/`、SDK、模型和部分构建只在板端。本地 `r1-pose-preview/pose_mode.sh` 按板端部署布局使用，不能在此目录直接替代完整跟随工程启动。
+### 4.2 板端目录
 
-### 4.2 O6N 板端目录
-
-| 绝对路径 | 用途 |
-| --- | --- |
-| `/home/radxa/r1-roadshow` | 场景联动、现场运镜主目录 |
-| `/home/radxa/r1-roadshow/API调用文档.md` | 完整 API 文档 |
-| `/home/radxa/r1-roadshow/arm-control` | 新末端点动工程，含脚本、配置和控制文档 |
-| `/home/radxa/r1-roadshow/director` | 场景判断与联动，日志在 `runs/` |
-| `/home/radxa/r1-roadshow/captures` | 实机快照、录像和关节日志 |
-| `/home/radxa/r1-roadshow/snapshot-clearance-20261121/build/r1_play` | 11 月 21 日保持及局部回位专用构建 |
-| `/home/radxa/r1-followcam` | 完整人体跟随和右手演示工程 |
-| `/home/radxa/r1-followcam-20261115-original` | 11 月 15 日完整归档和原始演示录像 |
-| `/home/radxa/r1-tracker/r1-7a_sdk` | 宇树 SDK、控制器及标定 |
-| `/home/radxa/yolo_test/p1-yolo-test` | YOLO、CIX NPU 模型与 Python 虚拟环境 |
-| `/home/radxa/houmo/minicpm-v4.6` | LQ50 MiniCPM-V 服务 |
-| `/home/radxa/vision-recorder` | 人员触发录制原型 |
-
-不同构建的 `r1_play` 功能不完全相同。板端旧 `build/r1_play`、本地 `play.cpp`、`snapshot-clearance-20261121` 构建不能仅凭文件名互换，调用前先看所选二进制的 `--help`。
+工作站按上面的仓库布局组织源码。板端的 SDK、模型、标定文件、输出目录和完整跟随工程由部署方配置。
 
 ### 4.3 SSH
 
-在工作站执行。实际主机、端口仅保存在本机 SSH 配置或环境变量中，不随仓库发布：
-
-```bash
-# 在 ~/.ssh/config 中自行配置 Host o6n 后使用
-ssh o6n
-# 或使用自己的主机名与端口：ssh -p <PORT> <USER>@<HOST>
-```
-
-登录后，视觉运镜进入 `cd /home/radxa/r1-roadshow`；API 进入 `cd /home/radxa/r1-roadshow/arm-control`；人体跟随进入 `cd /home/radxa/r1-followcam`。
-
+在工作站的 SSH 配置中设置自己的别名、账号和主机。文档中的通用连接示例为 `ssh <board-alias>`。通过受控渠道获取部署参数。
 ### 4.4 稳定设备路径
 
 部署时在板端列出当前稳定设备路径，并确认对应的物理设备：
@@ -130,7 +115,7 @@ ssh o6n
 ls -l /dev/serial/by-id/ /dev/v4l/by-id/
 ```
 
-历史安装曾分别指向 `/dev/ttyUSB0` 和 `/dev/video3`。优先使用 `by-id`，USB 拔插后数字节点可能变化。相机采集用 `video-index0`，不要把另一个节点直接当作视频流。
+部署时选择当前物理设备对应的稳定标识。重新插拔 USB 后复核视频流和串口。
 
 ## 5. 环境与运行前检查
 
@@ -155,22 +140,7 @@ cd r1-roadshow
 bash director/install.sh
 ```
 
-安装器把这两项写入本机 `~/.config/r1-director.env`，权限设为 `600`，并由两个用户服务读取。该文件已被 Git 忽略。若只运行 `director/run.sh`，只需导出 `R1_VLM_ENDPOINT`。服务需提供 `/health` 和 `/v1/chat/completions`；当前实现没有内置 API 密钥，若部署的服务要求认证，先在私有部署层配置，不要把真实密钥或服务器地址写入源码、注释或文档。`127.0.0.1` 出现在其他章节时仅指设备本机的预览、UDP 或诊断端口。
-
-板上检查设备与占用：
-
-```bash
-cd ~/r1-roadshow
-ls -l /dev/serial/by-id/ /dev/v4l/by-id/
-sha256sum ~/r1-tracker/r1-7a_sdk/config/joint_calib_right.txt
-fuser /dev/ttyUSB0
-pgrep -af 'r1_play|r1_jog|arm_server|field_session.py'
-systemctl --user status r1-director r1-director-vlm --no-pager
-df -h "$HOME"
-bash field/check.sh check
-```
-
-以上用于查看状态。`field/check.sh check` 还依赖默认 `build/r1_play`、`v4l2-ctl` 等；换构建时可设 `R1_PLAYER`。不存在或未启动的服务可能让查询返回非零，不等于机械臂故障。
+安装器使用本机的用户服务环境文件。部署方应在设备侧配置并保护模型服务地址和认证信息，核对安装版本、相机、串口以及资源占用情况。
 
 实机操作的共同约束：
 
@@ -182,180 +152,11 @@ bash field/check.sh check
 
 ## 6. 末端点动与本地 API
 
-完整协议见 [API调用文档.md](API调用文档.md)。该文件是板端 2026-11-21 文档快照，控制工程本身在 O6N `arm-control/`。
+公开接口说明见 [API调用文档.md](API调用文档.md)。使用离线数据核对请求、响应和状态转换；控制器版本、运行参数、驱动使能及退出流程请使用对应设备的受控部署文档。
 
-### 6.1 编译与离线模式
+## 7. 保持与退出
 
-在 O6N 执行：
-
-```bash
-cd ~/r1-roadshow/arm-control
-./build.sh
-./run.sh --self-test
-./run.sh --dry-run --script UUUUULLLLRRRRDDDD
-./run.sh --fk 0 0.3 0.8 0.8 0 0 0
-```
-
-`build.sh` 与 `run.sh` 会清除外部注入的 `LD_LIBRARY_PATH`，避免 Trae 自带 `libstdc++` 引发 `GLIBCXX_3.4.30` 冲突。这个处理用于点动工程；NPU 视觉程序仍需要 CIX 库路径。
-
-### 6.2 实机键盘与 API 启动
-
-```bash
-cd ~/r1-roadshow/arm-control
-
-# 纯键盘
-./run.sh
-
-# 或键盘 + API，共用一个控制进程
-./run.sh --api /tmp/r1_jog.sock
-```
-
-程序先探测七轴反馈、采集静止姿态，等待操作员按 **Enter**，再次核对姿态后使能 FOC 并保持启动位置。实机 API 在使能后监听，不能跳过 Enter。
-
-方向键为上下左右，A/D 也可左右，W/S 为前后。每次默认 **5 mm**；空格暂停/恢复，P 打印状态，Q 或 Ctrl+C 停机退出。
-
-### 6.3 协议、命令和参数
-
-接口是本机 Unix Domain Socket，**不是 HTTP 服务**。每行一条 UTF-8 命令，以换行结束；每条返回一行 JSON。最多 8 个客户端，单行最长 512 字节，所有客户端共享目标。
-
-| 命令 | 含义 |
-| --- | --- |
-| `ping` / `help` / `status` | 连通检查 / 命令列表 / 状态 |
-| `jog up 2` | 上移两步，默认目标增加 10 mm |
-| `jog down/left/right/forward/back N` | 其他方向，次数 1–200；也接受 `u/d/l/r/f/b` |
-| `move_rel 10 0 -5` | 在**当前目标**叠加 +X 10 mm、−Z 5 mm，单轴输入范围 ±1000 mm |
-| `pause` | 取消未完成目标，保持当前指令姿态 |
-| `resume` | 恢复接收运动指令，不恢复已取消的旧目标 |
-| `stop` | 请求 mode 0 停机并退出；需要臂体承托 |
-
-默认配置在板端 `arm-control/config/arm_right.conf`：
-
-| 参数 | 默认值 |
-| --- | ---: |
-| 控制周期 | 100 Hz / 10 ms |
-| 单步 | 5 mm |
-| 笛卡尔速度 | 25 mm/s |
-| 关节速度配置 | 0.25 rad/s |
-| 启动点周围工作空间半宽 | X ±80、Y ±100、Z ±80 mm |
-| 键盘目标超前限制 | 20 mm；API 不使用此限制，仍受工作空间裁剪 |
-| `kp` / `kd` | 60 / 1.0 |
-| 最大跟踪误差 | 0.08 rad |
-| 关节限位内缩 | 0.02 rad |
-| 姿态权重 / 阻尼 | 0.2 / 0.03 |
-
-姿态保持是逆解中的弱约束，当前无末端旋转 API。工作空间盒不等于全臂碰撞检查。
-
-### 6.4 无硬件 API 示例
-
-终端 A，在 O6N 启动模拟服务：
-
-```bash
-cd ~/r1-roadshow/arm-control
-./run.sh --dry-run --api /tmp/r1_jog.sock
-```
-
-终端 B，在同一块 O6N 运行。示例同时检查目标是否被取消、指令是否到位，并设置超时；最后用 `pause` 保持，服务继续运行：
-
-```bash
-python3 - <<'PY'
-import json
-import socket
-import time
-
-with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as sock:
-    sock.settimeout(2)
-    sock.connect('/tmp/r1_jog.sock')
-    with sock.makefile('rwb') as stream:
-        def call(command):
-            stream.write((command + '\n').encode())
-            stream.flush()
-            line = stream.readline()
-            if not line:
-                raise ConnectionError('控制器连接已关闭')
-            result = json.loads(line)
-            if not result.get('ok'):
-                raise RuntimeError(result)
-            return result
-
-        status = call('status')
-        print('dry_run:', status['dry_run'])
-        call('resume')
-        accepted = call('jog up 2')
-        expected = accepted['target_rel_mm']
-        try:
-            if accepted.get('clamped'):
-                raise RuntimeError('目标被工作空间裁剪')
-            deadline = time.monotonic() + 5
-            while time.monotonic() < deadline:
-                status = call('status')
-                unchanged = all(abs(status['target_rel_mm'][a] - expected[a]) < 0.1
-                                for a in ('x', 'y', 'z'))
-                if not unchanged:
-                    raise RuntimeError('控制器取消了目标，或其他客户端修改了目标')
-                error_mm = sum((status['rel_mm'][a] - expected[a]) ** 2
-                               for a in ('x', 'y', 'z')) ** 0.5
-                if error_mm < 0.1 and status['track_err_rad'] < 0.02:
-                    print('指令到达:', status['rel_mm'])
-                    break
-                time.sleep(0.05)
-            else:
-                raise TimeoutError('等待运动超时')
-        finally:
-            print('暂停保持:', call('pause')['state'])
-PY
-```
-
-实机协议相同，但服务必须由操作员在现场使能。`rel_mm`、`pose_m` 来自**指令角正解**，不是独立测得的末端位置；还应查看 `q_meas_rad`、`track_err_rad`，用现场测量或画面验收实际位移。
-
-**完成判据补充：** `ok:true` 仅表示接收目标，逆解在随后周期执行。11 月 21 日核对的 `jog_session.cpp` 在逆解失败时将目标重置为当前指令位置，`pending_mm` 因而可能归零；原 API 文档第 10 节“不可达时 pending 不归零”与该源码不一致。应保存接收后的目标并核对后续是否被取消，不能只等 `pending_mm == 0`。
-
-客户端断开不会取消运动。需要保持用 `pause`，承托后退出用 `stop`。多客户端可能覆盖目标，建议一个调度器统一发命令。远程调用优先在 SSH 会话里运行客户端，socket 无额外认证，不要直接改成公网服务。
-
-## 7. 带电保持当前位置与退出
-
-`r1_jog` 按 Enter 后本身会保持启动姿态。若只需要此前的“读停机角 → 原地保持”流程，可用 11 月 21 日专用构建。以下在 **O6N 交互终端**执行，会使能机械臂；先确认臂体静止、有承托、串口空闲。
-
-```bash
-cd ~/r1-roadshow
-export R1_SERIAL_PORT='/dev/serial/by-id/<当前机械臂设备>'
-bash <<'BASH'
-set -euo pipefail
-runner="$HOME/r1-roadshow/snapshot-clearance-20261121/build/r1_play"
-calibration="$HOME/r1-tracker/r1-7a_sdk/config/joint_calib_right.txt"
-port="${R1_SERIAL_PORT:?先设置当前机械臂的 /dev/serial/by-id 路径}"
-test -x "$runner"
-test -r "$calibration"
-if fuser -s "$port"; then
-    echo '串口正在使用，请先核对现有控制进程。' >&2
-    exit 1
-fi
-mkdir -p captures
-snapshot="$("$runner" --snapshot "$port" "$calibration")"
-reference="$(mktemp captures/current-hold-XXXXXX.txt)"
-printf '%s\n' "$snapshot" | python3 -c '
-import hashlib, json, math, pathlib, sys
-items = [json.loads(line.removeprefix("SNAPSHOT "))
-         for line in sys.stdin if line.startswith("SNAPSHOT ")]
-if len(items) != 1:
-    raise SystemExit("未得到唯一有效快照")
-sample = items[0]
-q = sample["q_sdk_rad"]
-if sample["mode"] != 0 or len(q) != 7 or not all(math.isfinite(v) for v in q):
-    raise SystemExit("角度反馈无效或电机并非停止状态")
-print(hashlib.sha256(pathlib.Path(sys.argv[1]).read_bytes()).hexdigest())
-print(" ".join(f"{v:.7f}" for v in q))
-' "$calibration" > "$reference"
-exec "$runner" --hold-snapshot "$port" "$calibration" "$reference"
-BASH
-```
-
-- `SNAPSHOT_HOLD_READY`：进入带电保持。
-- `HOLD_START_MISMATCH`：位置与参考不符，拒绝使能。
-- `SNAPSHOT_HOLD_STOPPED mode=0 on all joints`：已停止并复核七轴。
-- `Replay failed` 或保护提示：保持失败，应依靠现场承托。
-
-保持时不要关闭终端。解除前先让支架承重，再按 Ctrl+C。`--return-snapshot` 是依赖已测起点、终点和 J4 净空的局部回位试验，不是任意姿态自动回家的通用入口。
-
+现场调试时区分带电保持与失力。退出后依据设备反馈确认状态，再交还设备。
 ## 8. 人员进出区域触发录像
 
 这是独立摄像原型，**不打开机械臂串口**，复用板上 YOLO 工程的 NPU 推理与后处理。先跑视频，再接相机。
@@ -403,43 +204,13 @@ LD_LIBRARY_PATH=/usr/share/cix/lib \
 
 ## 9. 人体跟随与右手姿态演示
 
-完整部署在 O6N `~/r1-followcam`，根目录人员录制原型不能替代这个工程。
-
-### 9.1 人体水平跟随
-
-```bash
-# O6N：人体居中、跟随、约 20 秒录像，会使能机械臂
-cd ~/r1-followcam
-./run_demo.sh
-```
-
-视觉侧 `servo_node.py` 取 4K MJPEG，CIX NPU 运行 YOLOv8n；经 UDP `127.0.0.1:9870` 向 SDK `arm_server` 发控制，C++ 控制器以 100 Hz 访问电机。视频在 `recordings/`。
+本仓提供人员录制原型和姿态辅助代码。完整跟随系统还依赖设备侧的控制器、相机和推理环境。
 
 11 月 15 日记录的参数包括画面中心 ±3.5% 死区、启动点附近约 ±0.28 rad 的 J1 窗口，以及有限次数、带冷却的基准重设。不要取消重设次数限制，不稳定检测下曾出现持续旋转问题。
 
 ### 9.2 预览与姿态流程
 
-工作站先转发预览：
-
-```bash
-ssh -NT -L 127.0.0.1:8796:127.0.0.1:8796 o6n
-```
-
-浏览器打开 [姿态预览](http://127.0.0.1:8796/)，O6N 另一终端执行：
-
-```bash
-cd ~/r1-followcam
-./run_demo.sh --pose-check          # 构建、自检、预览，不开始实机跟随
-./run_demo.sh --pose                # 20 秒现场跟随
-./run_demo.sh --pose --wide         # 60 秒走位与右手跟随，不录像
-./run_demo.sh --pose-stop-preview   # 实机流程结束后释放相机
-```
-
-现场流程：确认画面与净空 → 输入 `open` → J1 居中、J4 抬开、J7 补偿 → 确认 J2 上方空间 → 输入 `go` → 自然垂右手等待约 8 秒归零 → 抬手、放手或走位。`stop` 可提前回位，顺序是 **J2 先回，J4/J7 后回**。
-
-YOLOv8s-Pose 历史预览约 12 fps，单次 NPU 推理通常约 25–30 ms。手的位置按双肩和肩宽归一化；镜面环境优先举右手锁定真人，身份不清时保持并等待恢复。姿态控制 UDP 为 `127.0.0.1:9883`，与原人体跟随不同。
-
-**C60E AI 构图：** 相机曾自动数字裁切，抵消机械转动造成的画面变化，1080p 与 4K 的表现不同。历史跟随用 4K 减少干扰；USB 重插后约 1–3 分钟窗口是现场观察，不是稳定关闭 AI 的方法。判断跟随效果应同时看关节日志和原始画面。
+工作站可通过自行配置的 SSH 隧道查看板端预览。主机、用户、服务端口与设备实例由部署方在本机配置。姿态归零、跟随和回位需要逐台验证。画面与关节日志应结合判读。
 
 ## 10. 视觉导演：场景判断与镜头选择
 
@@ -709,7 +480,7 @@ python3 field/session.py pan-powered-record --reference /实际收拢位.txt
 
 | 文档 | 内容 |
 | --- | --- |
-| [API调用文档.md](API调用文档.md) | `r1_jog` 协议、字段、Python/C++ 示例、限制 |
+| [API调用文档.md](API调用文档.md) | 本地控制接口的职责、使用条件与离线验证范围 |
 | [r1-roadshow/README.md](r1-roadshow/README.md) | 规划、现场配置、编译、待机、回放 |
 | [director/README.md](r1-roadshow/director/README.md) | 场景逻辑、部署、构图与联动参数 |
 | [今晚实机.md](r1-roadshow/今晚实机.md) | 历史起点、原子动作、录像与标定 |
@@ -717,8 +488,14 @@ python3 field/session.py pan-powered-record --reference /实际收拢位.txt
 | [11 月 16 日交接](R1-7a%20视觉跟随%202026-11-16%20交接记录.md) | 右手、走位、关节方向和日志 |
 | [11 月 18 日交接](R1-7A%20视觉运镜%202026-11-18%20交接记录.md) | 实拍联动、构图、回位与收拢 |
 
-新控制工程另有板端 `arm-control/文档/01-overview.md` 至 `05-roadmap.md`，说明总览、标定、键盘操作、安全和路线图。完整人体跟随说明在板端 `~/r1-followcam/README.md`。
+现场构建、控制器手册和标定资料由设备维护方按版本提供。
 
-2026-11-23 发布检查：22 项导演测试通过；Python 编译、Shell 语法、Markdown 本地链接及 8 份仿真轨迹哈希校验通过。第 6.4 节约 9.995 mm 的模拟结果来自 11 月 21 日板端记录，本次没有重新运行板端模拟或使能机械臂。详细口径见[验证摘要](validation/README.md)。
+历史版本的离线与实机观测见[验证摘要](validation/README.md)。各项结果只对应记录中的构建与环境。
 
 维护时注明日期、安装状态、构建和证据，将代码已实现、模拟通过、实机实测分开记录。`artifacts/`、`recordings/`、`director/runs/` 已由 `.gitignore` 排除；仿真轨迹 `director/plans/` 随仓库提交，不能直接当作实机路线。原始录像、标定和日志需通过私有渠道备份。原始参考包是设计来源，不代表 ROS、语音、底盘或产品拍摄能力已全部移植。
+
+## 软件许可与商业使用
+
+本项目有权授权的原创软件采用 [PolyForm Noncommercial License 1.0.0](LICENSE)。在许可规定的用途内，可以使用、修改和分发软件。商业产品集成、收费服务等超出许可范围的用途，请事先向相应权利人取得单独的书面商业授权。
+
+第三方设备 SDK、模型权重、参考动作包、外部测试视频及其他素材，按相应权利人的条款使用或分发。 商标与标识的使用须遵循权利人要求。

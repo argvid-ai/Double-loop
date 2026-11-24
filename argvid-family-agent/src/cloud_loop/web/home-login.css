@@ -1,0 +1,13 @@
+body.home-login { height: auto; min-height: 100dvh; overflow: auto; display: grid; place-items: center; padding: 40px 24px; }
+.home-entry { width: 100%; max-width: 420px; }
+.home-entry .brand { display: inline-block; font-size: 48px; margin-bottom: 56px; }
+.home-eyebrow { color: var(--accent); font-size: 12px; letter-spacing: .12em; margin-bottom: 12px; }
+.home-entry h1 { font-size: 32px; margin-bottom: 16px; }
+.home-description { color: var(--muted); line-height: 1.8; }
+#homeLogin { margin-top: 30px; }
+#homeLogin label { font-size: 14px; margin-bottom: 9px; }
+#homeCode { min-height: 48px; font-size: 16px; }
+#homeSubmit { width: 100%; min-height: 48px; margin-top: 16px; }
+#homeStatus { min-height: 28px; margin-top: 12px; color: var(--error); }
+.home-help { border-top: 1px solid var(--line); margin-top: 24px; padding-top: 20px; color: var(--muted); font-size: 12px; }
+@media (max-width: 480px) { .home-entry .brand { margin-bottom: 36px; } }

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>端云工作台 · CIX 双 Loop</title>
+  <link rel="icon" href="/web/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/web/style.css">
+  <script src="/web/app.js" defer></script>
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="/" aria-label="端云工作台首页"><span class="brand-mark">↔</span><span>CIX <small>FIELD SYSTEMS</small></span></a>
+    <div class="header-status"><span id="connection" class="signal">连接中</span><span id="profileVersion">装配 —</span><a href="/docs" target="_blank" rel="noreferrer">API ↗</a></div>
+  </header>
+  <main>
+    <section class="intro">
+      <div><p class="eyebrow">LOCAL LAB / TWO AGENTS, ONE TASK</p><h1>两端，各司其职。<br><em>让任务真正走完。</em></h1></div>
+      <div class="intro-note"><span class="edition">01 / 回放实验</span><p>云端组织目标与素材，端侧观察现场并执行。<br>用真实模型、真实视频文件，检验一次完整协作。</p><div class="truth-tags"><span>模型 API · 真实</span><span>设备采集 · 回放</span><span>SemIf · 未接入</span></div></div>
+    </section>
+    <nav class="tabs" aria-label="工作台视图">
+      <button data-tab="run" aria-selected="true">01 <b>运行任务</b></button>
+      <button data-tab="compose" aria-selected="false">02 <b>装配系统</b></button>
+      <button data-tab="assets" aria-selected="false">03 <b>素材与产物</b></button>
+      <button data-tab="protocol" aria-selected="false">04 <b>协议详情</b></button>
+    </nav>
+    <div id="notice" role="status" aria-live="polite" hidden></div>
+
+    <section id="panel-run" class="panel">
+      <div class="run-grid">
+        <aside class="task-input">
+          <p class="eyebrow">TASK BRIEF</p><h2>这次要完成什么？</h2>
+          <form id="taskForm">
+            <label for="prompt">用户目标</label><textarea id="prompt" rows="7" required></textarea>
+            <label for="mode">结果返回方式</label><select id="mode"><option value="deferred">等待现场条件，完成后恢复云端</option><option value="inline">现场已准备好，在当前回合返回</option></select>
+            <button id="startTask" class="primary" type="submit">提交给云端 <span>↗</span></button>
+          </form>
+          <div class="scene-console">
+            <p class="eyebrow">SCENE REPLAY</p><h3>改变现场事实</h3><p class="muted">只改变观察条件，由端侧 Agent 决定下一步。</p>
+            <div class="scene-buttons"><button data-stage="S0">① 用户离场</button><button data-stage="S1">② 在场 · 暂不可执行</button><button data-stage="S2">③ 在场 · 允许执行</button></div>
+            <p id="sceneState" class="scene-state">等待端侧状态</p>
+            <p class="muted">音频使用模拟转写文本；机械臂只改变模拟回执。</p>
+            <div class="scene-buttons"><button id="mockPause" disabled>模拟语音：暂停任务</button><button id="resumeEdge" disabled>显式恢复端侧任务</button></div>
+            <label for="motionFault">下一次模拟移动</label><select id="motionFault" disabled><option value="succeeded">正常完成</option><option value="rejected">设备拒绝</option><option value="timeout">模拟超时</option></select>
+            <p id="controlStatus" class="scene-state" aria-live="polite">尚未提交输入</p>
+          </div>
+          <label for="taskSelect">查看已有任务</label><select id="taskSelect"><option value="">尚无任务</option></select>
+          <button id="cancelTask" class="quiet" disabled>取消选中任务</button>
+        </aside>
+        <div class="execution">
+          <div class="section-title"><div><p class="eyebrow">LIVE EXECUTION</p><h2>一次任务，两条轨道</h2></div><span id="taskStatus" class="status-label">尚未启动</span></div>
+          <div class="node-pair"><div class="node cloud"><span>CLOUD / 云端</span><strong id="cloudModel">—</strong><small>目标 · 素材 · 成片</small></div><div class="bridge-symbol" aria-label="任务与事件往返">⇄<small>任务协议</small></div><div class="node edge"><span>EDGE / 端侧</span><strong id="edgeModel">—</strong><small>观察 · 准入 · 回放</small></div></div>
+          <p id="taskSummary" class="task-summary">提交任务后，这里展示两侧实际产生的事件。</p>
+          <details id="taskReport" hidden><summary>查看 Agent 的完整说明</summary><p id="taskAnswer"></p></details>
+          <div id="flowSummary" class="flow-summary" aria-label="实际任务阶段"></div>
+          <div class="timeline-head"><span>云端轨道</span><span>端侧轨道</span></div>
+          <div id="timeline" class="timeline"><div class="empty-state"><span>↔</span><h3>等待第一条任务</h3><p>接受任务、等待现场、上传素材、恢复成片，<br>每一步都有实际回执。</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="panel-compose" class="panel" hidden>
+      <div class="section-title"><div><p class="eyebrow">HARNESS COMPOSER</p><h2>能力装进去，运行才有它。</h2><p class="muted">配置描述、依赖与工具列表都由后端提供；保存后等待两侧确认生效。</p></div><div class="actions"><button id="validateProfile">校验装配</button><button id="saveProfile" class="primary">保存下一版</button></div></div>
+      <div id="composer" class="composer"></div>
+      <div id="validation" class="validation" aria-live="polite">正在读取配置</div>
+      <div class="design-note"><b>已接入与待接入分开显示</b><p>NanoBot 可连接 bridge 或已配置的本地 Qwen。提供者已接入不等于模型已加载；实际运行以模型回执为准。SemIf 和其他 Harness 尚未接入。运行中的任务固定装配版本。</p></div>
+    </section>
+
+    <section id="panel-assets" class="panel" hidden>
+      <div class="section-title"><div><p class="eyebrow">MEDIA & PROVENANCE</p><h2>看到文件，也看到它从哪里来。</h2><p class="muted">视频来自授权素材，端侧使用回放模拟补采。文件元数据由实际解码获得。</p></div></div>
+      <div id="assets" class="assets-grid"><p class="muted">选择一个任务查看产物。</p></div>
+    </section>
+
+    <section id="panel-protocol" class="panel" hidden>
+      <div class="section-title"><div><p class="eyebrow">CONTRACT INSPECTOR</p><h2>每一层，只说自己的事。</h2><p class="muted">装配配置、用户任务、工具定义、跨端消息与持久事件分别查看。</p></div></div>
+      <div id="protocol" class="protocol-list"></div>
+    </section>
+  </main>
+  <footer><span>CIX / 端云双 Loop 实验台</span><span>本机运行 · 设备回放 · 文件可验证</span><span id="updatedAt">等待连接</span></footer>
+</body>
+</html>

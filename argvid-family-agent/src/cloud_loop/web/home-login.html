@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Muse · 连接家里的设备</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/harness-static/harness.css">
+  <link rel="stylesheet" href="/harness-static/home-login.css">
+</head>
+<body class="home-login">
+  <main class="home-entry">
+    <a class="brand" href="/">muse</a>
+    <p class="home-eyebrow">家里的助理</p>
+    <h1>连接你的 Muse</h1>
+    <p class="home-description">输入设备配对码，查看家里的记录、视频和正在进行的工作。</p>
+    <form id="homeLogin">
+      <label for="homeCode">设备配对码</label>
+      <input id="homeCode" type="password" autocomplete="current-password" required maxlength="200" spellcheck="false" autofocus>
+      <button class="primary" id="homeSubmit" type="submit">进入 Muse</button>
+      <p id="homeStatus" role="status" aria-live="polite"></p>
+    </form>
+    <p class="home-help">首次连接时，配对码由这台 O6N 的所有者提供。请在自己的设备上登录。</p>
+  </main>
+  <script src="/harness-static/home-login.js"></script>
+</body>
+</html>

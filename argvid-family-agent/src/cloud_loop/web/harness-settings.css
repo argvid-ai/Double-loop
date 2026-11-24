@@ -1,0 +1,22 @@
+/* Local settings refinement, using the workbench's existing palette and type. */
+.settings-intro{padding:8px 0 16px}.settings-intro h3{font-size:20px;letter-spacing:-.4px;margin:3px 0 7px}
+.settings-current{background:var(--tint);border:1px solid var(--line);border-radius:12px;padding:16px;margin:0 0 12px}
+.wake-chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.wake-chip{display:inline-block;padding:4px 13px;background:var(--panel);border:1px solid #c9d6c5;border-radius:20px;color:var(--ink);font-size:16px;font-weight:600}
+.settings-switch{display:flex;align-items:center;gap:9px;margin:17px 0 10px}.settings-switch input{width:auto}
+.settings-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:15px}
+.settings-actions>button:not(.primary),.settings-test button{border-color:var(--line);font-size:12px}
+.settings-actions>span{flex-basis:100%}.settings-feedback{font-size:12px;white-space:pre-line;min-height:1em;margin:10px 0;color:var(--accent)}
+.settings-advanced{margin-top:13px;border-top:1px solid var(--line);padding-top:4px}
+.settings-advanced p{margin:8px 0}.settings-test{margin-top:18px;padding:18px 0;border-top:1px solid var(--line)}
+.settings-test h3{margin-bottom:5px}.settings-test form>button{margin-top:9px}
+.voice-check-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+.voice-check-grid>div{padding:12px;border:1px solid var(--line);border-radius:9px;background:var(--panel);min-width:0}
+.voice-check-grid p{font-size:12px;white-space:pre-line;overflow-wrap:anywhere;margin-top:5px}
+#deliverySettings{border-bottom:1px solid var(--line);padding:10px 0 20px;margin-bottom:15px}
+#deliverySettings>summary{font-size:13px}#deliveryCurrent{margin:10px 0}
+.settings-shortcuts{display:flex;flex-wrap:wrap;gap:6px;margin:-3px 0 16px;position:sticky;top:-22px;padding:12px 0;background:var(--paper);z-index:2;border-bottom:1px solid var(--line)}
+.settings-shortcuts button{font-size:12px;border:1px solid var(--line);background:var(--panel)}
+.settings-shortcuts button:last-child{margin-left:auto}
+#wakeForm label>span{font-size:11px;margin-left:8px}#voiceSettings{scroll-margin-top:55px}
+@media(max-width:560px){.voice-check-grid{grid-template-columns:1fr}.settings-intro h3{font-size:18px}.settings-actions>button{flex-grow:1}#voiceScenarios{flex-wrap:wrap}.settings-shortcuts{top:-22px}}

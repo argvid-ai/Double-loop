@@ -1,0 +1,23 @@
+{
+  "base_model": {
+    "repo": "Qwen/Qwen3.8-27B",
+    "revision": "1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0",
+    "publisher": "Qwen",
+    "url": "https://huggingface.co/Qwen/Qwen3.8-27B",
+    "license": "apache-2.0"
+  },
+  "artifact": {
+    "repo": "unsloth/Qwen3.8-27B-GGUF",
+    "revision": "4ca720788d1e01f1bff70c033e0d0028fd02e502",
+    "publisher": "Unsloth (third-party quantization)",
+    "filename": "Qwen3.8-27B-UD-Q4_K_M.gguf",
+    "size_bytes": 16464440224,
+    "sha256": "322e194ff79741c7baa497c240f677f54b201b0efab44ca8e50f122b39123482",
+    "license": "apache-2.0"
+  },
+  "checked_at": "2026-10-01",
+  "runtime_alias": "Qwen3.8-27B",
+  "scope": "text and tool calls only; vision projector not included",
+  "metadata_source": "Hugging Face model API with blobs=true; publisher model card",
+  "role": "pinned artifact specification; execution status belongs to verification evidence"
+}

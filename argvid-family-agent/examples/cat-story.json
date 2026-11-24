@@ -1,0 +1,19 @@
+{
+  "prompt": "检查 Mimi 最近十天的成长素材。先读取 context.json 和最新任务事实；若缺少玩耍正脸近景，委托端侧补拍。收到 accepted 后结束本轮并等待，不轮询。端侧完成后，读取最新事实，把已有素材和补拍结果整理成中文 report.md。整个案例中的现场与素材数据是 Mock，报告必须明确这一点，不得声称拍到了真实视频。",
+  "context": {
+    "simulated": true,
+    "subject": "Mimi",
+    "period_days": 10,
+    "preferences": ["自然抓拍", "不使用闪光灯", "竖屏"],
+    "coverage": {"eating": 3, "sleeping": 4, "playing_closeup": 0},
+    "required_shots": ["eating", "sleeping", "playing_closeup"]
+  },
+  "mock_result": {
+    "simulated": true,
+    "summary": "模拟完成 Mimi 玩球时的正脸近景，现场准入通过。",
+    "shot_type": "playing_closeup",
+    "duration_seconds": 6.4,
+    "quality_passed": true,
+    "asset_note": "仅用于接口联调，没有真实视频文件。"
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "prompt": "使用已登记的 Mimi 玩球素材制作12秒竖屏短片，前6秒全景、后6秒正脸近景。缺少近景时委托端侧补采；仅在用户在场、目标可见且设备允许执行时进行，不使用闪光灯。返回视频与素材来源清单。网上视频回放模拟现场，不能声称进行了真实拍摄。",
+  "context": {"subject_id": "pet-cat-mimi", "simulated": true, "scenario": "cat-replay"},
+  "completion_mode": "deferred"
+}

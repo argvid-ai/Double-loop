@@ -1,0 +1,13 @@
+{
+  "id": "demo-bridge",
+  "revision": 2,
+  "data_root": ".state/dual/v2",
+  "cloud": {
+    "model": "DeepSeek-V4-Pro",
+    "plugins": ["nanobot", "bridge-chat", "sqlite-state", "fresh-context", "trace-hooks", "story-skill", "gateway-http", "task-policy", "remote-capture", "ffmpeg-media"]
+  },
+  "edge": {
+    "model": "DeepSeek-V4-Flash",
+    "plugins": ["nanobot", "bridge-chat", "sqlite-state", "fresh-context", "trace-hooks", "photo-skill", "gateway-http", "task-policy", "scene-replay", "safety-guard", "replay-device"]
+  }
+}

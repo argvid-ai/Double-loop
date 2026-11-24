@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>O6N · 端侧会话实验台</title><link rel="icon" href="/web/icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/web/interaction.css"></head>
+<body>
+<header><a class="brand" href="/">CIX<span> / </span>FIELD NOTES</a><span class="edition">端云协作 · 交互实验</span><span id="connection" class="connection">连接端侧…</span></header>
+<main>
+<section class="intro"><div><p class="eyebrow">O6N / LOCAL-FIRST CONVERSATION</p><h1>和端侧对话。<br><em>让云端接手耗时工作。</em></h1></div><p class="intro-note">当前为实验配置，尚非最终选型。<br>现场、语音转写和机械臂使用 Mock；<br>模型调用、视频文件处理与运行记录是真实的。</p></section>
+<div class="route" aria-label="当前交互链路"><span>你 / 网页</span><b>→</b><span class="active">O6N · NanoBot<small id="modelName">读取配置…</small></span><b>⇄</b><span>本机云端 · NanoBot<small>按需委托 · DeepSeek-V4-Pro</small></span></div>
+<p class="scope-note">实验配置 · 视频文件回放 · 现场、语音和机械臂为 Mock</p>
+<div id="notice" role="status" hidden></div>
+<div class="workspace">
+<section class="conversation"><div class="section-heading"><h2>对话</h2><div class="session-controls"><select id="sessions" aria-label="选择会话"></select><button id="newSession" class="quiet">＋ 新会话</button></div></div>
+<div id="messages" class="messages" aria-live="polite"><div class="welcome"><span class="chapter">01</span><h3>从一句具体的话开始</h3><p>O6N 负责理解和回应。任务可以在后台运行，你仍然可以追问、暂停或取消。</p><button id="example" class="example">试试：制作十二秒猫咪短片 ↗</button></div></div>
+<form id="composer"><label for="message">发给 O6N</label><textarea id="message" rows="3" placeholder="例如：做一段十二秒竖屏猫咪视频，用户在场才能补拍，不要闪光灯。" maxlength="8000" required></textarea><div class="compose-bottom"><span>⌘ / Ctrl + Enter 发送 · 可在回复中继续输入</span><button id="send" type="submit">发送 <span>↗</span></button></div></form>
+<div class="metrics"><span>端到端首次显字 <b id="clientLatency">—</b></span><span>最近模型回合 <b id="turnLatency">—</b></span><span>配置上下文 <b id="contextSize">—</b></span></div>
+</section>
+<aside><section class="state-panel"><p class="eyebrow">CURRENT STATE</p><div class="state-title"><h2>当前状态</h2><span id="intentStatus" class="status">无任务</span></div><p id="goal" class="goal">还没有保存任务目标。</p><dl><div><dt>版本</dt><dd id="version">—</dd></div><div><dt>是否可执行</dt><dd id="permission">—</dd></div><div><dt>等待原因</dt><dd id="blockReason">—</dd></div><div><dt>云端任务</dt><dd id="cloudStatus">未委托</dd></div></dl><div class="task-controls"><button data-control="pause">暂停任务</button><button data-control="resume">继续任务</button><button data-control="cancel" class="danger">取消任务</button></div></section>
+<section class="simulation"><div class="section-heading"><h2>现场回放</h2><span class="mock">MOCK</span></div><p>改变输入事实，不直接生成任务成功。</p><div class="stages"><button data-stage="S0">01 <span>用户不在场</span></button><button data-stage="S1">02 <span>设备暂不允许</span></button><button data-stage="S2">03 <span>允许执行</span></button></div><label for="transcript">模拟语音转写</label><div class="speech"><input id="transcript" value="暂停当前拍摄任务" aria-label="模拟转写内容"><button id="sendTranscript" aria-label="提交模拟语音">↗</button></div><small>走共同输入接口，不调用麦克风或 ASR。</small></section>
+<details class="tools"><summary>已装配工具</summary><ul id="toolList"></ul></details>
+</aside></div>
+<section class="outputs"><div class="section-heading"><h2>素材与成片</h2><span id="assetCount">等待真实产物</span></div><div id="assets" class="asset-grid"><p class="empty">已核验的素材会出现在这里。文字声明不会生成视频。</p></div></section>
+<details class="trace"><summary>查看本会话模型消息与工具轨迹 <span>MESSAGES / TOOLS / EVENTS</span></summary><button id="refreshTrace" class="quiet">读取完整轨迹</button><pre id="trace">展开后点击读取。任务状态、模型消息和工具参数分别保留。</pre></details>
+</main><footer><span>O6N 是交互主体 · 两侧复用 NanoBot</span><span>LOCAL DEVELOPMENT / 单 worker / LOOPBACK</span></footer>
+<script src="/web/interaction.js"></script></body></html>

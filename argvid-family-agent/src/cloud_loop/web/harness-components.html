@@ -1,0 +1,25 @@
+<dialog id="libraryDialog" class="panel-dialog gallery-dialog">
+  <header class="panel-heading"><div><p class="eyebrow">MUSE / 影像</p><h2>视频相册</h2><p class="muted">原录像在这里，时间标记帮助你找到值得回看的范围。</p></div><button data-close="libraryDialog" aria-label="关闭资料库">×</button></header>
+  <nav id="galleryFilters" class="gallery-filters" aria-label="相册分类"><button data-gallery="sources" aria-pressed="true">输入素材</button><button data-gallery="markers" aria-pressed="false">时间标记</button><button data-gallery="exports" aria-pressed="false">已导出视频</button><button id="reloadGallery">刷新</button></nav>
+  <p id="libraryStatus" role="status" class="muted"></p>
+  <div id="galleryMarkerFilters" class="settings-pair" hidden><label for="galleryTask">观察任务<select id="galleryTask"></select></label><label for="galleryDecision">标记状态<select id="galleryDecision"><option value="all">全部状态</option><option value="keep">保留</option><option value="discard">不选</option><option value="uncertain">待定</option></select></label></div>
+  <section id="galleryPlayer" hidden><div class="section-title"><h3 id="galleryPlayerTitle"></h3><button id="closeGalleryPlayer" aria-label="收起视频">收起 ×</button></div><video id="galleryVideo" controls preload="none"></video><audio id="galleryAudio" controls preload="none" hidden></audio><p id="galleryPlaybackStatus" role="status" class="muted"></p><button id="replayGalleryVideo">重新播放</button><a id="galleryOriginal" target="_blank" rel="noopener">打开原文件 ↗</a></section>
+  <div id="libraryItems" class="gallery-grid"></div>
+</dialog>
+<section id="componentManager">
+  <div class="catalog-filters"><label>配置节点<select id="componentSide"><option value="edge">端侧 · O6N</option><option value="cloud">云侧 · 本机</option></select></label><button id="reloadComponents">重新读取</button></div>
+  <p id="componentStatus" class="muted" role="status"></p>
+  <details><summary>内置工具</summary><p class="muted">必要的任务管理工具保持开启。关闭的可选工具会从模型实际工具表移除。</p><div id="builtinTools"></div></details>
+  <details><summary>添加工具来源（MCP）</summary><p class="muted">连接已运行的标准工具服务。地址中的本机指所选节点；不在地址里填写密钥。</p>
+    <form id="mcpForm"><label>来源标识<input id="mcpId" pattern="[a-z][a-z0-9_-]{0,39}" placeholder="camera-tools" required></label><label>名称<input id="mcpTitle" placeholder="我的摄像工具" required></label><label>协议<select id="mcpTransport"><option value="streamable_http">Streamable HTTP</option><option value="sse">SSE</option></select></label><label>服务地址<input id="mcpUrl" type="url" placeholder="http://127.0.0.1:8000/mcp" required></label><label>请求头文件（可选，节点私有JSON文件路径）<input id="mcpHeaders" placeholder="不填写密钥正文"></label><button>检查连接与工具清单</button></form>
+  </details>
+  <div id="mcpSources"></div>
+  <details><summary>Skill</summary><div id="skillList"></div><form id="skillForm"><p class="muted">选择节点上的目录或上传一个Skill ZIP。不会运行安装脚本；额外脚本需对应工具适配器。</p><label>节点本地目录<input id="skillPath" placeholder="包含 SKILL.md 的目录"></label><label>或选择 ZIP<input id="skillZip" type="file" accept=".zip"></label><button>导入并检查</button></form></details>
+  <div class="apply-footer"><p class="muted">检查或导入不会自动启用。应用影响该节点后续运行，已有对话与任务记录保留；忙碌时请等待。</p><button id="applyComponents" class="primary">应用所选配置</button></div>
+</section>
+<section id="cameraManager">
+  <div class="catalog-filters"><label>来源所在节点<select id="cameraSide"><option value="edge">端侧 · O6N</option><option value="cloud">云侧 · 本机</option></select></label><button id="refreshCameras">刷新列表</button></div>
+  <p id="cameraStatus" class="muted" role="status"></p><div id="cameraList"></div>
+  <details><summary>添加摄像头或回放来源</summary><form id="cameraForm"><label>名称<input id="cameraTitle" placeholder="桌面摄像头" required></label><label>类型<select id="cameraKind"><option value="file_replay">文件回放</option><option value="usb">USB摄像头（Linux V4L2）</option><option value="rtsp">网络视频流（RTSP）</option></select></label><label id="cameraFileLabel">已登记原片<select id="cameraFile"></select></label><label id="cameraDeviceLabel" hidden>已发现的设备<select id="cameraDevice"></select></label><label id="cameraUrlLabel" hidden>网络地址<input id="cameraUrl" placeholder="rtsp://设备地址/stream"></label><p class="muted">USB/RTSP当前提供单帧预览接口；录像与视觉理解分别检查，未接入不显示为可用。需要认证的相机应使用专用工具适配器。</p><button>保存来源</button></form></details>
+  <section id="liveCameraPreview" hidden><h3 id="liveCameraTitle"></h3><img id="liveCameraImage" alt="所选来源的预览帧"><p id="liveCameraFacts" class="muted"></p></section>
+</section>
